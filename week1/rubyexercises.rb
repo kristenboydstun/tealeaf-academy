@@ -66,3 +66,7 @@ puts arr_c
 
 #15. Look at several Rails/Ruby online API sources and say which one your like best and why.
 puts "\n#13 ---"
+puts "I downloaded the mac 'Dash' app which aggregates API info. 
+I like that you can search the documentation for ruby, rails, 
+html, css, javascript, etc. all from one place, and it integrates
+with sublime."
