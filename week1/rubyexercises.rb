@@ -43,6 +43,7 @@ puts hash_2
 #9. Get the value of key "b".
 puts "\n#9 ---"
 puts hash_1[:b]
+puts "But hash_1[\"b\"] gives an error because b is a symbol, not a string"
 
 #10. Add to this hash the key:value pair {e:5}
 puts "\n#10 ---"
