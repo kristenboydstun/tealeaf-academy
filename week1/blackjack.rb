@@ -66,14 +66,24 @@ class Player
 end
 
 class Game
-  def calculateWinner (player1, player2)
-    winner = player1.countCards > player2.countCards ? player1 : player2
+  def showWinner (player1, player2)
+    cards1 = player1.countCards
+    cards2 = player2.countCards
+    # tie
+    if cards1 == cards2
+      puts "TIE"
+    elsif cards1 > 21 && cards2 > 21
+      puts "EVERYONE OVER 21"
+    elsif cards1 > 21
+      winner = player2
+    elsif cards2 > 21
+      winner = player1
+    else
+      winner = cards1 > cards2 ? player1 : player2
+    end
+    puts winner.getName unless winner.nil?
   end
 end
-# class game would
-# calculate winner
-# use multiple decks
-# have multiple players?
 
 
 
@@ -120,9 +130,7 @@ end
 
 puts
 puts "---------- GAME OVER ----------"
-
 puts
-puts "---------- SHOWING CARDS ----------"
 puts player.getName
 player.showHand
 puts
@@ -141,7 +149,10 @@ puts ""
 puts dealer.getName
 puts dealer.countCards
 
-blackjackGame.calculateWinner(player, dealer)
+puts ""
+puts "---------- WINNER ----------"
+puts ""
+blackjackGame.showWinner(player, dealer)
 
 
 
