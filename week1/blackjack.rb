@@ -2,7 +2,7 @@ class Deck
   def initialize
     @suits = ["hearts","spades","diamonds","clubs"]
     @cards = []
-    @valueDictionary = {"ace" => 11, "one" => 1, "two" => 2, "three" => 3, "four" => 4, "five" => 5, "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9, "ten" => 10, "jack" => 10, "queen" => 10, "king" => 10}
+    @valueDictionary = {"ace" => 11, "two" => 2, "three" => 3, "four" => 4, "five" => 5, "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9, "ten" => 10, "jack" => 10, "queen" => 10, "king" => 10}
 
     @suits.each do |suit|
       @valueDictionary.keys.each do |card_name|
@@ -28,7 +28,11 @@ class Deck
   end
 end 
 
-CardHolder = Struct.new(:card_name, :suit, :value)
+CardHolder = Struct.new(:card_name, :suit, :value) do
+  def showCard
+    "#{card_name} of #{suit}"
+  end
+end
 
 class Player
   def initialize (name, deck)
@@ -37,11 +41,17 @@ class Player
     @cards = []
   end
 
+  def getName
+    @name.upcase
+  end
   def greeting
     "Welcome " + @name
   end
   def showHand
-    @cards
+    @cards.each { |card| puts card.showCard}
+  end
+  def showOneCard
+    puts @cards[0].showCard
   end
   def countCards
     total = 0
@@ -55,7 +65,15 @@ class Player
   end
 end
 
-
+class Game
+  def calculateWinner (player1, player2)
+    winner = player1.countCards > player2.countCards ? player1 : player2
+  end
+end
+# class game would
+# calculate winner
+# use multiple decks
+# have multiple players?
 
 
 
@@ -64,6 +82,7 @@ puts "Welcome to blackjack! Please enter your name:"
 name = gets.chomp
 puts ""
 
+blackjackGame = Game.new
 myDeck = Deck.new
 myDeck.shuffle
 
@@ -71,24 +90,59 @@ player = Player.new(name, myDeck)
 dealer = Player.new("dealer", myDeck)
 puts player.greeting
 
-puts "DEALING"
 player.hit
 player.hit
 dealer.hit
 dealer.hit
 
-#puts "Hit or stay?"
-#move = gets.chomp.downcase
-#puts move
+puts
+puts "---------- SHOWING CARDS ----------"
+puts dealer.getName
+dealer.showOneCard
+puts "*********"
 
-puts "SHOWING PLAYER'S HAND"
-puts player.showHand
+while player.countCards < 21
+  puts
+  puts player.getName
+  player.showHand
 
-puts "SHOWING DEALER'S HAND"
-puts dealer.showHand
+  puts
+  puts "Hit or stay?"
+  move = gets.chomp.downcase
 
-puts "Number of cards in the deck:"
-puts myDeck.numCards
+  move == "hit" ? player.hit : break
 
-puts "TOTAL IN PLAYER'S HAND"
+  # Dealer must hit if 16 or below
+  dealer.hit if dealer.countCards <= 16
+end
+
+
+
+puts
+puts "---------- GAME OVER ----------"
+
+puts
+puts "---------- SHOWING CARDS ----------"
+puts player.getName
+player.showHand
+puts
+puts dealer.getName
+dealer.showHand
+
+#puts "Number of cards in the deck:"
+#puts myDeck.numCards
+
+puts ""
+puts "---------- POINT COUNT ----------"
+puts ""
+puts player.getName
 puts player.countCards
+puts ""
+puts dealer.getName
+puts dealer.countCards
+
+blackjackGame.calculateWinner(player, dealer)
+
+
+
+
