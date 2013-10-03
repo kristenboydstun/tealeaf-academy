@@ -1,12 +1,11 @@
 class Deck
   def initialize
     @suits = ["hearts","spades","diamonds","clubs"]
-    @card_names = ["ace", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king"]
     @cards = []
     @valueDictionary = {"ace" => 11, "one" => 1, "two" => 2, "three" => 3, "four" => 4, "five" => 5, "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9, "ten" => 10, "jack" => 10, "queen" => 10, "king" => 10}
 
     @suits.each do |suit|
-      @card_names.each do |card_name|
+      @valueDictionary.keys.each do |card_name|
         @cards << CardHolder.new(card_name, suit, @valueDictionary["#{card_name}"])
       end
     end
@@ -29,9 +28,7 @@ class Deck
   end
 end 
 
-CardHolder = Struct.new(:card_name, :suit, :value) do
-
-end
+CardHolder = Struct.new(:card_name, :suit, :value)
 
 class Player
   def initialize (name, deck)
@@ -80,6 +77,9 @@ player.hit
 dealer.hit
 dealer.hit
 
+#puts "Hit or stay?"
+#move = gets.chomp.downcase
+#puts move
 
 puts "SHOWING PLAYER'S HAND"
 puts player.showHand
