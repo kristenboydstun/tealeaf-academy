@@ -5,8 +5,8 @@ class Deck
     @valueDictionary = {"ace" => 11, "two" => 2, "three" => 3, "four" => 4, "five" => 5, "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9, "ten" => 10, "jack" => 10, "queen" => 10, "king" => 10}
 
     @suits.each do |suit|
-      @valueDictionary.keys.each do |card_name|
-        @cards << CardHolder.new(card_name, suit, @valueDictionary["#{card_name}"])
+      @valueDictionary.keys.each do |name|
+        @cards << CardHolder.new(name, suit, @valueDictionary["#{name}"])
       end
     end
   end  
@@ -15,7 +15,7 @@ class Deck
     @cards.length
   end
 
-  def getCards  
+  def getCards
     @cards
   end 
 
@@ -28,9 +28,9 @@ class Deck
   end
 end 
 
-CardHolder = Struct.new(:card_name, :suit, :value) do
+CardHolder = Struct.new(:name, :suit, :value) do
   def showCard
-    "#{card_name} of #{suit}"
+    "#{name} of #{suit}"
   end
 end
 
@@ -44,9 +44,6 @@ class Player
   def getName
     @name.upcase
   end
-  def greeting
-    "Welcome " + @name
-  end
   def showHand
     @cards.each { |card| puts card.showCard}
   end
@@ -55,8 +52,14 @@ class Player
   end
   def countCards
     total = 0
+    aces = 0
     @cards.each do |card| 
       total += card.value
+      aces = aces + 1 if  card.name == "ace"
+    end
+    while total > 21 && aces > 0
+      total = total - 10
+      aces = aces - 1
     end
     total
   end
@@ -98,7 +101,6 @@ myDeck.shuffle
 
 player = Player.new(name, myDeck)
 dealer = Player.new("dealer", myDeck)
-puts player.greeting
 
 player.hit
 player.hit
@@ -121,12 +123,9 @@ while player.countCards < 21
   move = gets.chomp.downcase
 
   move == "hit" ? player.hit : break
-
-  # Dealer must hit if 16 or below
-  dealer.hit if dealer.countCards <= 16
 end
 
-
+dealer.hit while dealer.countCards <= 16
 
 puts
 puts "---------- GAME OVER ----------"
