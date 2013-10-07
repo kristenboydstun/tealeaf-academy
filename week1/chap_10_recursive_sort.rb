@@ -6,7 +6,7 @@ end
 def recursive_sort unsorted_array, sorted_array
   smallest = unsorted_array[0]
   unsorted_array.each do |element| 
-    smallest = element if element < smallest
+    smallest = element if element.downcase < smallest.downcase
   end
   sorted_array << unsorted_array.delete_at(unsorted_array.index(smallest))
 
@@ -15,6 +15,6 @@ def recursive_sort unsorted_array, sorted_array
   sorted_array
 end
 
-unsorted = ["peach", "apple", "beef", "banana", "butter", "grape"]
+unsorted = ["peach", "apple", "Art", "beef", "banana", "Burger", "butter", "grape"]
 
 puts sort unsorted
